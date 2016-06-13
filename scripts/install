@@ -4,20 +4,30 @@ vendor=adobe
 font=`cat fontname`
 
 dir="$1"
+dontwait="$2"
 
-if [ "x$dir" = x ]
-then
-  dir="$(kpsewhich -expand-var='$TEXMFLOCAL')"
+echo $dontwait
+
+if [[ $dontwait = *y* ]]; then
+   echo "dontwait is $dontwait"
+   echo "font files will be installed into $dir"
+else
+   #echo "dontwait is not set or not y"
+
+  if [ "x$dir" = x ]
+  then
+    dir="$(kpsewhich -expand-var='$TEXMFLOCAL')"
+  fi
+
+  while true; do
+      read -p "Do you wish to install the font files into $dir? (y/n) " yn
+      case $yn in
+          [Yy]* ) break;;
+          [Nn]* ) exit;;
+          * ) echo "Please answer yes or no.";;
+      esac
+  done
 fi
-
-while true; do
-    read -p "Do you wish to install the font files into $dir? (y/n) " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
 
 # new directory layout (TDS v1.1)
 enc_dir="$dir/fonts/enc/dvips/$font"
