@@ -1,5 +1,6 @@
 #!/bin/bash
 HERE=$(pwd)
+cd /FontPro
 apt-get install ed
 set -x
 kpsexpand '$TEXMFLOCAL'
